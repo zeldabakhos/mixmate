@@ -1,14 +1,26 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  webapp:
-    build: .
+  frontend:
+    build: ./frontend
     ports:
-      - "5000:5000"
+      - "3000:3000"
+    depends_on:
+      - backend
     environment:
-      - FLASK_ENV=development
+      - REACT_APP_API_URL=http://localhost:4000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
       - MONGO_URI=mongodb://mongodb:27017/multidb
-      - REDIS_URI=redis://redis:6379/0
+      - REDIS_URI=redis://redis:6379
       - NEO4J_URI=bolt://neo4j:7687
       - NEO4J_USER=neo4j
       - NEO4J_PASSWORD=password
@@ -17,7 +29,8 @@ services:
       - redis
       - neo4j
     volumes:
-      - ./app:/app
+      - ./backend:/app
+      - /app/node_modules
 
   mongodb:
     image: mongo:6.0
