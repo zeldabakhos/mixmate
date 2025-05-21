@@ -1,6 +1,6 @@
 # Multi-Database Flask Application with Docker
 
-This project demonstrates a Python web application that interacts with three different databases:
+This project demonstrates a Nodejs web application that interacts with three different databases:
 - MongoDB (Document database)
 - Redis (Key-value store)
 - Neo4j (Graph database)
@@ -8,9 +8,8 @@ This project demonstrates a Python web application that interacts with three dif
 ## Features
 
 - CRUD operations for each database type
-- Well-structured code following separation of concerns
 - Dockerized environment for easy setup
-- Web interface to interact with each database
+- Web interface to interact with each database (React)
 
 ## Prerequisites
 
@@ -25,3 +24,6 @@ This project demonstrates a Python web application that interacts with three dif
 
 ```bash
 docker-compose up --build
+```
+4. Open your browser and navigate to `http://localhost:3000`
+
