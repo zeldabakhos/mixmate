@@ -1,6 +1,6 @@
-# Multi-Database Flask Application with Docker
+# Multi-Database Application with Docker
 
-This project demonstrates a Nodejs web application that interacts with three different databases:
+This project demonstrates a Node.js web application that interacts with three different databases:
 - MongoDB (Document database)
 - Redis (Key-value store)
 - Neo4j (Graph database)
