@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const redis = require('redis');
 const neo4j = require('neo4j-driver');
 
+const userRoutes = require("./routes/users");
+const drinkRoutes = require("./routes/drinks");
+const ingredientRoutes = require("./routes/ingredients");
+
 const app = express();
 
 // Middleware
@@ -41,6 +45,9 @@ const connectDB = async () => {
 app.use('/api/mongo', require('./routes/mongoRoutes'));
 app.use('/api/redis', require('./routes/redisRoutes'));
 app.use('/api/neo4j', require('./routes/neo4jRoutes'));
+app.use("/api/users", userRoutes);
+app.use("/api/drinks", drinkRoutes);
+app.use("/api/ingredients", ingredientRoutes);
 
 // Start server
 const PORT = process.env.PORT || 4000;
@@ -49,3 +56,21 @@ connectDB().then(() => {
     console.log(`Server running on port ${PORT}`);
   });
 });
+
+// CORS Middleware
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    next();
+});
+
+// Home route
+app.get("/", (req, res) => {
+    res.send("🍸 Welcome to the Mixology API - Make your drinks at home!");
+});
+
+// Connect to MongoDB
+connectDB();
