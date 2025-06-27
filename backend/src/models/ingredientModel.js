@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
 
 const ingredientSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  type: {
-    type: String,
-    enum: ['alcohol', 'mixer', 'garnish', 'other'],
-    default: 'other'
-  }
+  name: String,
+  quantity: String,
 });
 
-module.exports = mongoose.model('Ingredient', ingredientSchema);
+// ✅ This line prevents the OverwriteModelError:
+const Ingredient = mongoose.models.Ingredient || mongoose.model('Ingredient', ingredientSchema);
+
+module.exports = Ingredient;

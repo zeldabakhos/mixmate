@@ -6,6 +6,7 @@ const {
   getAllIngredients,
   updateIngredient,
   deleteIngredient,
+  saveIngredientFromAPI
 } = require("../controllers/ingredientControllers");
 
 const { verifyToken } = require("../middleware/auth");
@@ -21,5 +22,7 @@ router.put("/:id", verifyToken, updateIngredient);
 
 // Delete ingredient by id (protected)
 router.delete("/:id", verifyToken, deleteIngredient);
+
+router.post('/save-from-api', saveIngredientFromAPI);
 
 module.exports = router;

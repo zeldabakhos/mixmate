@@ -53,3 +53,28 @@ exports.deleteIngredient = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+exports.saveIngredientFromAPI = async (req, res) => {
+  const { ingredientId } = req.body;
+
+  try {
+    const response = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?iid=${ingredientId}`);
+    const ingredientData = response.data.ingredients?.[0];
+    if (!ingredientData) return res.status(404).json({ message: "Ingredient not found in CocktailDB" });
+
+    const name = ingredientData.strIngredient;
+    const type = ingredientData.strType || "";
+    const alcoholContent = ingredientData.strAlcohol ? (ingredientData.strAlcohol.toLowerCase() === 'yes' ? 1 : 0) : 0;
+
+    // Avoid duplicates
+    const existingIngredient = await Ingredient.findOne({ name: new RegExp(`^${name}$`, 'i') });
+    if (existingIngredient) return res.status(400).json({ message: "Ingredient already saved" });
+
+    const newIngredient = new Ingredient({ name, type, alcoholContent });
+    const savedIngredient = await newIngredient.save();
+    res.status(201).json(savedIngredient);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
